@@ -29,12 +29,72 @@ def get_ilhas():
     ilhas = [{'id': row[0], 'nome': row[1]} for row in result]
     return jsonify(ilhas)
 
-@app.route('/concelhos', methods=['POST'])
+@app.route('/conselhos', methods=['POST'])
+@login_required
 def conselhos():
-    ilha = request.get_json().get("id")
-    result = db.session.execute(text("SELECT id, nome FROM conselhos WHERE id_ilha = :ilha").bindparams(bindparam("ilha", ilha)))
-    conselhos = [{'id': row[0], 'nome': row[1]} for row in result]
-    return jsonify(conselhos)
+    data = request.get_json()
+    ilha = data.get("id")
+
+    if not ilha:
+        return jsonify({"error": "Por favor insira um id de ilha"}), 400
+
+    try:
+        result = db.session.execute(text("SELECT id, nome FROM conselhos WHERE id_ilha = :ilha"), {"ilha": ilha})
+        conselhos = [{'id': row[0], 'nome': row[1]} for row in result]
+        return jsonify(conselhos)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+
+@app.route('/freguesias', methods=['POST'])
+@login_required
+def freguesias():
+    data = request.get_json()
+    conselho = data.get("id")
+    
+    if not conselho:
+        return jsonify({"error": "Por favor insira um id de conselho"}), 400
+    
+    try:
+        result = db.session.execute(text("SELECT id, nome FROM freguesias WHERE id_conselho = :conselho"), {"conselho": conselho})
+        freguesias = [{'id': row[0], 'nome': row[1]} for row in result]
+        return jsonify(freguesias)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+@app.route('/zonas', methods=['POST'])
+@login_required
+def zonas():
+    data = request.get_json()
+    freguesia = data.get("id")
+    
+    if not freguesia:
+        return jsonify({"error": "Por favor insira um id de freguesia"}), 400
+    
+    try:
+        result = db.session.execute(text("SELECT id, nome FROM zonas WHERE id_freguesia = :freguesia"), {"freguesia": freguesia})
+        zonas = [{'id': row[0], 'nome': row[1]} for row in result]
+        return jsonify(zonas)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+@app.route('/lugares', methods=['POST'])
+@login_required
+def lugares():
+    data = request.get_json()
+    zona = data.get("id")
+    
+    if not zona:
+        return jsonify({"error": "Por favor insira um id de zona"}), 400
+    
+    try:
+        result = db.session.execute(text("SELECT id, nome FROM lugares WHERE id_zona = :zona"), {"zona": zona})
+        lugares = [{'id': row[0], 'nome': row[1]} for row in result]
+        return jsonify(lugares)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+    
 
 @app.route("/login", methods=["POST"])
 def login():
@@ -56,6 +116,7 @@ def login():
     return jsonify({"success": True})
 
 @app.route("/logout", methods=["POST"])
+@login_required
 def logout():
     session.clear()
     return jsonify({"success": True})
