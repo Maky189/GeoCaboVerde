@@ -1,0 +1,4 @@
+flask_session/
+myenv/
+myvenv/
+__pycache__/

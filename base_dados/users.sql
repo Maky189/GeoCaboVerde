@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS USERS (
+    id INT AUTO_INCREMENT NOT NULL,
+    username VARCHAR (255) NOT NULL,
+    hash VARCHAR (255) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+INSERT INTO USERS (username, hash) VALUES ('admin', '12345');
