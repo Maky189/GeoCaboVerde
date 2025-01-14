@@ -3,7 +3,7 @@ create table zonas (
     nome VARCHAR (255),
     id_freguesia INT,
     PRIMARY KEY (id),
-    FOREIGN KEY (id_freguesia) REFERENCES freguesias (id)
+    FOREIGN KEY (id_freguesia) REFERENCES freguesias (id) ON DELETE CASCADE
 );
 
 insert into zonas (id, nome, id_freguesia) values (11101, "FAJA DOMINGAS BENTA", 111);

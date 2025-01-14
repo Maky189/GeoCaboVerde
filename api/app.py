@@ -23,14 +23,44 @@ def after_request(response):
     return response
 
 @app.route('/ilhas', methods=['GET'])
-@login_required
 def get_ilhas():
     result = db.session.execute(text("SELECT id, nome FROM ilhas"))
     ilhas = [{'id': row[0], 'nome': row[1]} for row in result]
     return jsonify(ilhas)
 
-@app.route('/conselhos', methods=['POST'])
+@app.route('/ilhas', methods=['UPDATE'])
 @login_required
+def update_ilhas():
+    data = request.get_json()
+    anterior = data.get("ilha_anterior")
+    atual = data.get("ilha_atual")
+    
+    if not anterior or not atual:
+        return jsonify({"error: Por favor insira um nome de ilha"})
+    
+    try:
+        db.session.execute(text("UPDATE ilhas set nome = :atual WHERE nome = :anterior"), {"atual": atual}, {"anterior": anterior})
+        return jsonify([{"success" : True}])
+    except Exception:
+        return jsonify({"error": str(Exception)}), 500
+
+@app.route('/ilhas', methods=['DELETE'])
+@login_required
+def delete_ilhas():
+    data = request.get_json()
+    ilha = data.get("ilha")
+    
+    if not ilha:
+        return jsonify({"error: Por favor insira um nome de ilha"})
+    
+    try:
+        db.session.execute(text("DELETE FROM ilhas WHERE nome = :ilha"), {"ilha": ilha})
+        return jsonify([{"success" : True}])
+    except Exception:
+        return jsonify({"error": str(Exception)}), 500
+    
+
+@app.route('/conselhos', methods=['POST'])
 def conselhos():
     data = request.get_json()
     ilha = data.get("id")
@@ -45,9 +75,37 @@ def conselhos():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
+@app.route('/conselhos', methods=['UPDATE'])
+def update_conselhos():
+    data = request.get_json()
+    anterior = data.get("conselho_anterior")
+    atual = data.get("conselho_atual")
+    
+    if not anterior or not atual:
+        return jsonify({"error: Por favor insira um nome de conselho"})
+    
+    try:
+        db.session.execute(text("UPDATE conselhos set nome = :atual WHERE nome = :anterior"), {"atual": atual}, {"anterior": anterior})
+        return jsonify([{"success" : True}])
+    except Exception:
+        return jsonify({"error": str(Exception)}), 500
+    
+@app.route('/conselhos', methods=['DELETE'])
+def delete_conselhos():
+    data = request.get_json()
+    conselho = data.get("conselho")
+    
+    if not conselho:
+        return jsonify({"error: Por favor insira um nome de conselho"})
+    
+    try:
+        db.session.execute(text("DELETE FROM conselhos WHERE nome = :conselho"), {"conselho": conselho})
+        return jsonify([{"success" : True}])
+    except Exception:
+        return jsonify({"error": str(Exception)}), 500
+    
 
 @app.route('/freguesias', methods=['POST'])
-@login_required
 def freguesias():
     data = request.get_json()
     conselho = data.get("id")
@@ -62,8 +120,36 @@ def freguesias():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
+@app.route('/freguesias', methods=['UPDATE'])
+def update_freguesias():
+    data = request.get_json()
+    anterior = data.get("freguesia_anterior")
+    atual = data.get("freguesia_atual")
+    
+    if not anterior or not atual:
+        return jsonify({"error: Por favor insira um nome de freguesia"})
+    
+    try:
+        db.session.execute(text("UPDATE freguesias set nome = :atual WHERE nome = :anterior"), {"atual": atual}, {"anterior": anterior})
+        return jsonify([{"success" : True}])
+    except Exception:
+        return jsonify({"error": str(Exception)}), 500
+    
+@app.route('/freguesias', methods=['DELETE'])
+def delete_freguesias():
+    data = request.get_json()
+    freguesia = data.get("freguesia")
+    
+    if not freguesia:
+        return jsonify({"error: Por favor insira um nome de freguesia"})
+    
+    try:
+        db.session.execute(text("DELETE FROM freguesias WHERE nome = :freguesia"), {"freguesia": freguesia})
+        return jsonify([{"success" : True}])
+    except Exception:
+        return jsonify({"error": str(Exception)}), 500
+    
 @app.route('/zonas', methods=['POST'])
-@login_required
 def zonas():
     data = request.get_json()
     freguesia = data.get("id")
@@ -78,8 +164,37 @@ def zonas():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
+@app.route('/zonas', methods=['UPDATE'])
+def update_zonas():
+    data = request.get_json()
+    anterior = data.get("zona_anterior")
+    atual = data.get("zona_atual")
+    
+    if not anterior or not atual:
+        return jsonify({"error: Por favor insira um nome de zona"})
+    
+    try:
+        db.session.execute(text("UPDATE zonas set nome = :atual WHERE nome = :anterior"), {"atual": atual}, {"anterior": anterior})
+        return jsonify([{"success" : True}])
+    except Exception:
+        return jsonify({"error": str(Exception)}), 500
+    
+
+@app.route('/zonas', methods=['DELETE'])
+def delete_zonas():
+    data = request.get_json()
+    zona = data.get("zona")
+    
+    if not zona:
+        return jsonify({"error: Por favor insira um nome de zona"})
+    
+    try:
+        db.session.execute(text("DELETE FROM zonas WHERE nome = :zona"), {"zona": zona})
+        return jsonify([{"success" : True}])
+    except Exception:
+        return jsonify({"error": str(Exception)}), 500
+    
 @app.route('/lugares', methods=['POST'])
-@login_required
 def lugares():
     data = request.get_json()
     zona = data.get("id")
@@ -93,6 +208,37 @@ def lugares():
         return jsonify(lugares)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+    
+@app.route('/lugares', methods=['UPDATE'])
+def update_lugares():
+    data = request.get_json()
+    anterior = data.get("lugar_anterior")
+    atual = data.get("lugar_atual")
+    
+    if not anterior or not atual:
+        return jsonify({"error: Por favor insira um nome de lugar"})
+    
+    try:
+        db.session.execute(text("UPDATE lugares set nome = :atual WHERE nome = :anterior"), {"atual": atual}, {"anterior": anterior})
+        return jsonify([{"success" : True}])
+    except Exception:
+        return jsonify({"error": str(Exception)}), 500
+    
+
+@app.route('/lugares', methods=['DELETE'])
+def delete_lugares():
+    data = request.get_json()
+    lugar = data.get("lugar")
+    
+    if not lugar:
+        return jsonify({"error: Por favor insira um nome de lugar"})
+    
+    try:
+        db.session.execute(text("DELETE FROM lugares WHERE nome = :lugar"), {"lugar": lugar})
+        return jsonify([{"success" : True}])
+    except Exception:
+        return jsonify({"error": str(Exception)}), 500
     
     
 

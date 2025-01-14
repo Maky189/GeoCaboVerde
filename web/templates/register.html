@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block main %}
-    <form id="registerForm">
+    <form name="register" action="/register" method="post">
         <div class="mb-3">
             <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="username" name="username" placeholder="Username" type="text">
         </div>
@@ -17,35 +17,4 @@
         </div>
         <button class="btn btn-primary" type="submit">Register</button>
     </form>
-
-    <script>
-        document.getElementById('registerForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const confirmation = document.getElementById('confirmation').value;
-
-            fetch('/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    username: username,
-                    password: password,
-                    confirmation: confirmation
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    alert(data.error);
-                } else {
-                    window.location.href = '/';
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        });
-    </script>
 {% endblock %}

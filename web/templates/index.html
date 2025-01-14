@@ -1,0 +1,186 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block main %}
+    <form>
+        <div class="mb-3">
+            <label for="ilha" class="form-label">Selecione uma Ilha</label>
+            <select class="form-select" id="ilha" name="ilha" onchange="fetchConselhos()">
+                <option value="">Selecione uma Ilha</option>
+                {% for ilha in ilhas %}
+                    <option value="{{ ilha.id }}">{{ ilha.nome }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3" id="conselhos-container" style="display: none;">
+            <label for="conselho" class="form-label">Selecione um Conselho</label>
+            <select class="form-select" id="conselho" name="conselho" onchange="fetchFreguesias()">
+                <!-- Conselhos will be populated here -->
+            </select>
+        </div>
+        <div class="mb-3" id="freguesias-container" style="display: none;">
+            <label for="freguesia" class="form-label">Selecione uma Freguesia</label>
+            <select class="form-select" id="freguesia" name="freguesia" onchange="fetchZonas()">
+                <!-- Freguesias will be populated here -->
+            </select>
+        </div>
+        <div class="mb-3" id="zonas-container" style="display: none;">
+            <label for="zona" class="form-label">Selecione uma Zona</label>
+            <select class="form-select" id="zona" name="zona" onchange="fetchLugares()">
+                <!-- Zonas will be populated here -->
+            </select>
+        </div>
+        <div class="mb-3" id="lugares-container" style="display: none;">
+            <label for="lugar" class="form-label">Selecione um Lugar</label>
+            <select class="form-select" id="lugar" name="lugar">
+                <!-- Lugares will be populated here -->
+            </select>
+        </div>
+    </form>
+
+    <script>
+        async function fetchConselhos() {
+            const ilhaId = document.getElementById('ilha').value;
+            if (!ilhaId) {
+                document.getElementById('conselhos-container').style.display = 'none'
+                return;
+            }
+            
+            document.getElementById('freguesias-container').style.display = 'none';
+            try {
+                const response = await fetch('/conselhos', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ ilha_id: ilhaId })
+                });
+
+                if (response.ok) {
+                    const conselhos = await response.json();
+                    const conselhoSelect = document.getElementById('conselho');
+                    conselhoSelect.innerHTML = '';
+                    conselhos.forEach(conselho => {
+                        const option = document.createElement('option');
+                        option.value = conselho.id;
+                        option.textContent = conselho.nome;
+                        conselhoSelect.appendChild(option);
+                    });
+                    document.getElementById('conselhos-container').style.display = 'block';
+                } else {
+                    console.error('Erro ao buscar conselhos');
+                }
+            } catch (error) {
+                console.error('Erro ao buscar conselhos:', error);
+            }
+        }
+
+        async function fetchFreguesias() {
+            const conselhoId = document.getElementById('conselho').value;
+            if (!conselhoId) {
+                document.getElementById('freguesias-container').style.display = 'none';
+                return;
+            }
+
+            try {
+                const response = await fetch('/freguesias', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ conselho_id: conselhoId })
+                });
+
+                if (response.ok) {
+                    const freguesias = await response.json();
+                    const freguesiaSelect = document.getElementById('freguesia');
+                    freguesiaSelect.innerHTML = '';
+                    freguesias.forEach(freguesia => {
+                        const option = document.createElement('option');
+                        option.value = freguesia.id;
+                        option.textContent = freguesia.nome;
+                        freguesiaSelect.appendChild(option);
+                    });
+                    document.getElementById('freguesias-container').style.display = 'block';
+                } else {
+                    console.error('Erro ao buscar freguesias');
+                }
+            } catch (error) {
+                console.error('Erro ao buscar freguesias:', error);
+            }
+        }
+
+        async function fetchZonas() {
+            const freguesiaId = document.getElementById('freguesia').value;
+            if (!freguesiaId) {
+                document.getElementById('zonas-container').style.display = 'none';
+                return;
+            }
+
+            try {
+                const response = await fetch('/zonas', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ freguesia_id: freguesiaId })
+                });
+
+                if (response.ok) {
+                    const zonas = await response.json();
+                    const zonaSelect = document.getElementById('zona');
+                    zonaSelect.innerHTML = '';
+                    zonas.forEach(zona => {
+                        const option = document.createElement('option');
+                        option.value = zona.id;
+                        option.textContent = zona.nome;
+                        zonaSelect.appendChild(option);
+                    });
+                    document.getElementById('zonas-container').style.display = 'block';
+                } else {
+                    console.error('Erro ao buscar zonas');
+                }
+            } catch (error) {
+                console.error('Erro ao buscar zonas:', error);
+            }
+        }
+
+        async function fetchLugares() {
+            const zonaId = document.getElementById('zona').value;
+            if (!zonaId) {
+                document.getElementById('lugares-container').style.display = 'none';
+                return;
+            }
+
+            try {
+                const response = await fetch('/lugares', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ zona_id: zonaId })
+                });
+
+                if (response.ok) {
+                    const lugares = await response.json();
+                    const lugarSelect = document.getElementById('lugar');
+                    lugarSelect.innerHTML = '';
+                    lugares.forEach(lugar => {
+                        const option = document.createElement('option');
+                        option.value = lugar.id;
+                        option.textContent = lugar.nome;
+                        lugarSelect.appendChild(option);
+                    });
+                    document.getElementById('lugares-container').style.display = 'block';
+                } else {
+                    console.error('Erro ao buscar lugares');
+                }
+            } catch (error) {
+                console.error('Erro ao buscar lugares:', error);
+            }
+        }
+    </script>
+{% endblock %}

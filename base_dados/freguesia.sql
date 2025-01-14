@@ -3,7 +3,7 @@ create table freguesias (
     nome varchar (255),
     id_conselho INT,
     PRIMARY KEY (id),
-    FOREIGN KEY (id_conselho) REFERENCES conselhos (id)
+    FOREIGN KEY (id_conselho) REFERENCES conselhos (id) ON DELETE CASCADE
 );
 
 insert into freguesias (id, nome, id_conselho) VALUES (111, "N. S. ROSARIO", 11);

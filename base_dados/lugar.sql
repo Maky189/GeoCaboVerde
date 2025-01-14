@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS lugares (
     nome VARCHAR (255) NOT NULL,
     id_zona INT,
     PRIMARY KEY (id),
-    FOREIGN KEY (id_zona) REFERENCES zonas (id)
+    FOREIGN KEY (id_zona) REFERENCES zonas (id) ON DELETE CASCADE
 );
 
 insert into lugares (id, nome, id_zona) values (1110101, "BOCA DE PEDREGAL", 11101);

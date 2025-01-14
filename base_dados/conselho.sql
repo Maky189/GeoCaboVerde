@@ -3,7 +3,7 @@ create table conselhos (
     nome VARCHAR(255) not null,
     id_ilha INT NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN key (id_ilha) REFERENCES ilhas (id)
+    FOREIGN key (id_ilha) REFERENCES ilhas (id) ON DELETE CASCADE
 );
 
 insert into conselhos (id, nome, id_ilha) values (11, "RIBEIRA GRANDE", 1);
