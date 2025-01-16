@@ -21,3 +21,19 @@ nav .navbar-brand .green
 {
     color: #2e944b;
 }
+
+/* Align select elements to the side */
+.form-select {
+    display: inline-block;
+    width: auto;
+    margin-right: 10px;
+}
+
+/* Background image */
+body {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: background-image 0.5s ease-in-out;
+}
+

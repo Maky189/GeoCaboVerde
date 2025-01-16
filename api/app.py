@@ -23,13 +23,14 @@ def after_request(response):
     return response
 
 @app.route('/ilhas', methods=['GET'])
+
 def get_ilhas():
     result = db.session.execute(text("SELECT id, nome FROM ilhas"))
     ilhas = [{'id': row[0], 'nome': row[1]} for row in result]
     return jsonify(ilhas)
 
 @app.route('/ilhas', methods=['UPDATE'])
-@login_required
+
 def update_ilhas():
     data = request.get_json()
     anterior = data.get("ilha_anterior")
@@ -45,7 +46,7 @@ def update_ilhas():
         return jsonify({"error": str(Exception)}), 500
 
 @app.route('/ilhas', methods=['DELETE'])
-@login_required
+
 def delete_ilhas():
     data = request.get_json()
     ilha = data.get("ilha")
@@ -61,6 +62,7 @@ def delete_ilhas():
     
 
 @app.route('/conselhos', methods=['POST'])
+
 def conselhos():
     data = request.get_json()
     ilha = data.get("id")
@@ -76,6 +78,7 @@ def conselhos():
         return jsonify({"error": str(e)}), 500
     
 @app.route('/conselhos', methods=['UPDATE'])
+
 def update_conselhos():
     data = request.get_json()
     anterior = data.get("conselho_anterior")
@@ -91,6 +94,7 @@ def update_conselhos():
         return jsonify({"error": str(Exception)}), 500
     
 @app.route('/conselhos', methods=['DELETE'])
+
 def delete_conselhos():
     data = request.get_json()
     conselho = data.get("conselho")
@@ -106,6 +110,7 @@ def delete_conselhos():
     
 
 @app.route('/freguesias', methods=['POST'])
+
 def freguesias():
     data = request.get_json()
     conselho = data.get("id")
@@ -121,6 +126,7 @@ def freguesias():
         return jsonify({"error": str(e)}), 500
     
 @app.route('/freguesias', methods=['UPDATE'])
+
 def update_freguesias():
     data = request.get_json()
     anterior = data.get("freguesia_anterior")
@@ -136,6 +142,7 @@ def update_freguesias():
         return jsonify({"error": str(Exception)}), 500
     
 @app.route('/freguesias', methods=['DELETE'])
+
 def delete_freguesias():
     data = request.get_json()
     freguesia = data.get("freguesia")
@@ -150,6 +157,7 @@ def delete_freguesias():
         return jsonify({"error": str(Exception)}), 500
     
 @app.route('/zonas', methods=['POST'])
+
 def zonas():
     data = request.get_json()
     freguesia = data.get("id")
@@ -165,6 +173,7 @@ def zonas():
         return jsonify({"error": str(e)}), 500
     
 @app.route('/zonas', methods=['UPDATE'])
+
 def update_zonas():
     data = request.get_json()
     anterior = data.get("zona_anterior")
@@ -181,6 +190,7 @@ def update_zonas():
     
 
 @app.route('/zonas', methods=['DELETE'])
+
 def delete_zonas():
     data = request.get_json()
     zona = data.get("zona")
@@ -195,6 +205,7 @@ def delete_zonas():
         return jsonify({"error": str(Exception)}), 500
     
 @app.route('/lugares', methods=['POST'])
+
 def lugares():
     data = request.get_json()
     zona = data.get("id")
@@ -211,6 +222,7 @@ def lugares():
     
     
 @app.route('/lugares', methods=['UPDATE'])
+
 def update_lugares():
     data = request.get_json()
     anterior = data.get("lugar_anterior")
@@ -227,6 +239,7 @@ def update_lugares():
     
 
 @app.route('/lugares', methods=['DELETE'])
+
 def delete_lugares():
     data = request.get_json()
     lugar = data.get("lugar")

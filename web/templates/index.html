@@ -5,37 +5,41 @@
 {% endblock %}
 
 {% block main %}
-    <form>
-        <div class="mb-3">
+    <form class="d-flex flex-wrap">
+        <div class="mb-3 me-3">
             <label for="ilha" class="form-label">Selecione uma Ilha</label>
             <select class="form-select" id="ilha" name="ilha" onchange="fetchConselhos()">
-                <option value="">Selecione uma Ilha</option>
+                <option value="" disabled selected>Selecione uma Ilha</option>
                 {% for ilha in ilhas %}
                     <option value="{{ ilha.id }}">{{ ilha.nome }}</option>
                 {% endfor %}
             </select>
         </div>
-        <div class="mb-3" id="conselhos-container" style="display: none;">
+        <div class="mb-3 me-3" id="conselhos-container" style="display: none;">
             <label for="conselho" class="form-label">Selecione um Conselho</label>
             <select class="form-select" id="conselho" name="conselho" onchange="fetchFreguesias()">
+                <option value="" disabled selected>Selecione um Conselho</option>
                 <!-- Conselhos will be populated here -->
             </select>
         </div>
-        <div class="mb-3" id="freguesias-container" style="display: none;">
+        <div class="mb-3 me-3" id="freguesias-container" style="display: none;">
             <label for="freguesia" class="form-label">Selecione uma Freguesia</label>
             <select class="form-select" id="freguesia" name="freguesia" onchange="fetchZonas()">
+                <option value="" disabled selected>Selecione uma Freguesia</option>
                 <!-- Freguesias will be populated here -->
             </select>
         </div>
-        <div class="mb-3" id="zonas-container" style="display: none;">
+        <div class="mb-3 me-3" id="zonas-container" style="display: none;">
             <label for="zona" class="form-label">Selecione uma Zona</label>
             <select class="form-select" id="zona" name="zona" onchange="fetchLugares()">
+                <option value="" disabled selected>Selecione uma Zona</option>
                 <!-- Zonas will be populated here -->
             </select>
         </div>
-        <div class="mb-3" id="lugares-container" style="display: none;">
+        <div class="mb-3 me-3" id="lugares-container" style="display: none;">
             <label for="lugar" class="form-label">Selecione um Lugar</label>
             <select class="form-select" id="lugar" name="lugar">
+                <option value="" disabled selected>Selecione um Lugar</option>
                 <!-- Lugares will be populated here -->
             </select>
         </div>
@@ -43,13 +47,13 @@
 
     <script>
         async function fetchConselhos() {
+            document.getElementById('lugares-container').style.display = 'none';
             const ilhaId = document.getElementById('ilha').value;
             if (!ilhaId) {
                 document.getElementById('conselhos-container').style.display = 'none'
                 return;
             }
             
-            document.getElementById('freguesias-container').style.display = 'none';
             try {
                 const response = await fetch('/conselhos', {
                     method: 'POST',
@@ -62,7 +66,7 @@
                 if (response.ok) {
                     const conselhos = await response.json();
                     const conselhoSelect = document.getElementById('conselho');
-                    conselhoSelect.innerHTML = '';
+                    conselhoSelect.innerHTML = '<option value="" disabled selected>Selecione um Conselho</option>';
                     conselhos.forEach(conselho => {
                         const option = document.createElement('option');
                         option.value = conselho.id;
@@ -70,6 +74,11 @@
                         conselhoSelect.appendChild(option);
                     });
                     document.getElementById('conselhos-container').style.display = 'block';
+
+                    document.getElementById('freguesias-container').style.display = 'none';
+                    document.getElementById('zonas-container').style.display = 'none';
+                    document.createElement('lugares-container').style.display = 'none';
+
                 } else {
                     console.error('Erro ao buscar conselhos');
                 }
@@ -97,7 +106,7 @@
                 if (response.ok) {
                     const freguesias = await response.json();
                     const freguesiaSelect = document.getElementById('freguesia');
-                    freguesiaSelect.innerHTML = '';
+                    freguesiaSelect.innerHTML = '<option value="" disabled selected>Selecione uma Freguesia</option>';
                     freguesias.forEach(freguesia => {
                         const option = document.createElement('option');
                         option.value = freguesia.id;
@@ -105,6 +114,8 @@
                         freguesiaSelect.appendChild(option);
                     });
                     document.getElementById('freguesias-container').style.display = 'block';
+                    document.getElementById('zonas-container').style.display = 'none';
+                    document.getElementById('lugares-container').style.display = 'none';
                 } else {
                     console.error('Erro ao buscar freguesias');
                 }
@@ -132,7 +143,7 @@
                 if (response.ok) {
                     const zonas = await response.json();
                     const zonaSelect = document.getElementById('zona');
-                    zonaSelect.innerHTML = '';
+                    zonaSelect.innerHTML = '<option value="" disabled selected>Selecione uma Zona</option>';
                     zonas.forEach(zona => {
                         const option = document.createElement('option');
                         option.value = zona.id;
@@ -140,6 +151,7 @@
                         zonaSelect.appendChild(option);
                     });
                     document.getElementById('zonas-container').style.display = 'block';
+                    document.getElementById('lugares-container').style.display = 'none';
                 } else {
                     console.error('Erro ao buscar zonas');
                 }
@@ -167,7 +179,7 @@
                 if (response.ok) {
                     const lugares = await response.json();
                     const lugarSelect = document.getElementById('lugar');
-                    lugarSelect.innerHTML = '';
+                    lugarSelect.innerHTML = '<option value="" disabled selected>Selecione um Lugar</option>';
                     lugares.forEach(lugar => {
                         const option = document.createElement('option');
                         option.value = lugar.id;
