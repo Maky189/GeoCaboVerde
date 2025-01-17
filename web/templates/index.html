@@ -5,52 +5,57 @@
 {% endblock %}
 
 {% block main %}
-    <form class="d-flex flex-wrap">
-        <div class="mb-3 me-3">
-            <label for="ilha" class="form-label">Selecione uma Ilha</label>
-            <select class="form-select" id="ilha" name="ilha" onchange="fetchConselhos()">
-                <option value="" disabled selected>Selecione uma Ilha</option>
-                {% for ilha in ilhas %}
-                    <option value="{{ ilha.id }}">{{ ilha.nome }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <div class="mb-3 me-3" id="conselhos-container" style="display: none;">
-            <label for="conselho" class="form-label">Selecione um Conselho</label>
-            <select class="form-select" id="conselho" name="conselho" onchange="fetchFreguesias()">
-                <option value="" disabled selected>Selecione um Conselho</option>
-                <!-- Conselhos will be populated here -->
-            </select>
-        </div>
-        <div class="mb-3 me-3" id="freguesias-container" style="display: none;">
-            <label for="freguesia" class="form-label">Selecione uma Freguesia</label>
-            <select class="form-select" id="freguesia" name="freguesia" onchange="fetchZonas()">
-                <option value="" disabled selected>Selecione uma Freguesia</option>
-                <!-- Freguesias will be populated here -->
-            </select>
-        </div>
-        <div class="mb-3 me-3" id="zonas-container" style="display: none;">
-            <label for="zona" class="form-label">Selecione uma Zona</label>
-            <select class="form-select" id="zona" name="zona" onchange="fetchLugares()">
-                <option value="" disabled selected>Selecione uma Zona</option>
-                <!-- Zonas will be populated here -->
-            </select>
-        </div>
-        <div class="mb-3 me-3" id="lugares-container" style="display: none;">
-            <label for="lugar" class="form-label">Selecione um Lugar</label>
-            <select class="form-select" id="lugar" name="lugar">
-                <option value="" disabled selected>Selecione um Lugar</option>
-                <!-- Lugares will be populated here -->
-            </select>
-        </div>
-    </form>
+    <h1 class="mb-5">Ilhas Cabo Verde</h1>
+    <div class="select-box">
+        <form class="d-flex flex-wrap">
+            <div class="mb-3 me-3">
+                <label for="ilha" class="form-label">Selecione uma Ilha</label>
+                <select class="form-select selectpicker" id="ilha" name="ilha" onchange="fetchConselhos(); generateImage();" data-live-search="true">
+                    <option value="" disabled selected>Selecione uma Ilha</option>
+                    {% for ilha in ilhas %}
+                        <option value="{{ ilha.id }}">{{ ilha.nome }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3 me-3" id="conselhos-container" style="display: none;">
+                <label for="conselho" class="form-label">Selecione um Conselho</label>
+                <select class="form-select selectpicker" id="conselho" name="conselho" onchange="fetchFreguesias()" data-live-search="true">
+                    <option value="" disabled selected>Selecione um Conselho</option>
+                    <!-- Conselhos will be populated here -->
+                </select>
+            </div>
+            <div class="mb-3 me-3" id="freguesias-container" style="display: none;">
+                <label for="freguesia" class="form-label">Selecione uma Freguesia</label>
+                <select class="form-select selectpicker" id="freguesia" name="freguesia" onchange="fetchZonas()" data-live-search="true">
+                    <option value="" disabled selected>Selecione uma Freguesia</option>
+                    <!-- Freguesias will be populated here -->
+                </select>
+            </div>
+            <div class="mb-3 me-3" id="zonas-container" style="display: none;">
+                <label for="zona" class="form-label">Selecione uma Zona</label>
+                <select class="form-select selectpicker" id="zona" name="zona" onchange="fetchLugares()" data-live-search="true">
+                    <option value="" disabled selected>Selecione uma Zona</option>
+                    <!-- Zonas will be populated here -->
+                </select>
+            </div>
+            <div class="mb-3 me-3" id="lugares-container" style="display: none;">
+                <label for="lugar" class="form-label">Selecione um Lugar</label>
+                <select class="form-select selectpicker" id="lugar" name="lugar" data-live-search="true">
+                    <option value="" disabled selected>Selecione um Lugar</option>
+                    <!-- Lugares will be populated here -->
+                </select>
+            </div>
+        </form>
+    </div>
 
     <script>
         async function fetchConselhos() {
+            document.getElementById('freguesias-container').style.display = 'none';
+            document.getElementById('zonas-container').style.display = 'none';
             document.getElementById('lugares-container').style.display = 'none';
             const ilhaId = document.getElementById('ilha').value;
             if (!ilhaId) {
-                document.getElementById('conselhos-container').style.display = 'none'
+                document.getElementById('conselhos-container').style.display = 'none';
                 return;
             }
             
@@ -74,10 +79,12 @@
                         conselhoSelect.appendChild(option);
                     });
                     document.getElementById('conselhos-container').style.display = 'block';
+                    $('.selectpicker').selectpicker('refresh');
 
+                    document.getElementById('conselhos-container').style.display = 'none';
                     document.getElementById('freguesias-container').style.display = 'none';
                     document.getElementById('zonas-container').style.display = 'none';
-                    document.createElement('lugares-container').style.display = 'none';
+                    document.getElementById('lugares-container').style.display = 'none';
 
                 } else {
                     console.error('Erro ao buscar conselhos');
@@ -114,6 +121,8 @@
                         freguesiaSelect.appendChild(option);
                     });
                     document.getElementById('freguesias-container').style.display = 'block';
+                    $('.selectpicker').selectpicker('refresh');
+
                     document.getElementById('zonas-container').style.display = 'none';
                     document.getElementById('lugares-container').style.display = 'none';
                 } else {
@@ -151,6 +160,7 @@
                         zonaSelect.appendChild(option);
                     });
                     document.getElementById('zonas-container').style.display = 'block';
+                    $('.selectpicker').selectpicker('refresh');
                     document.getElementById('lugares-container').style.display = 'none';
                 } else {
                     console.error('Erro ao buscar zonas');
@@ -166,6 +176,8 @@
                 document.getElementById('lugares-container').style.display = 'none';
                 return;
             }
+
+            document.getElementById('lugares-container').style.display = 'none';
 
             try {
                 const response = await fetch('/lugares', {
@@ -187,6 +199,7 @@
                         lugarSelect.appendChild(option);
                     });
                     document.getElementById('lugares-container').style.display = 'block';
+                    $('.selectpicker').selectpicker('refresh');
                 } else {
                     console.error('Erro ao buscar lugares');
                 }
@@ -194,5 +207,18 @@
                 console.error('Erro ao buscar lugares:', error);
             }
         }
+
+        function generateImage() {
+            const ilha = document.getElementById('ilha').value;
+            const imageUrl = ilha ? `/static/${ilha}.jpg` : '/static/CaboVerde.jpg';
+            document.body.style.backgroundImage = `url(${imageUrl})`;
+            document.body.className = ilha ? 'island' : 'cabo-verde';
+        }
+
+        // Set initial background image
+        document.addEventListener('DOMContentLoaded', function() {
+            generateImage();
+            $('.selectpicker').selectpicker();
+        });
     </script>
 {% endblock %}
