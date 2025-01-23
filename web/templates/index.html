@@ -10,7 +10,7 @@
         <form class="d-flex flex-wrap">
             <div class="mb-3 me-3">
                 <label for="ilha" class="form-label">Selecione uma Ilha</label>
-                <select class="form-select selectpicker" id="ilha" name="ilha" onchange="fetchConselhos(); generateImage();" data-live-search="true">
+                <select class="form-select selectpicker" id="ilha" name="ilha" onchange="fetchConselhos(); generateImage(); showDescription();" data-live-search="true">
                     <option value="" disabled selected>Selecione uma Ilha</option>
                     {% for ilha in ilhas %}
                         <option value="{{ ilha.id }}">{{ ilha.nome }}</option>
@@ -47,6 +47,12 @@
             </div>
         </form>
     </div>
+    <div class="description-box" id="description-box" style="display: none;">
+        <p id="description-content"></p>
+    </div>
+    <div class="additional-box" id="additional-box" style="display: none;">
+        <p id="additional-content">Conteúdo adicional aqui.</p>
+    </div>
 
     <script>
         async function fetchConselhos() {
@@ -80,11 +86,6 @@
                     });
                     document.getElementById('conselhos-container').style.display = 'block';
                     $('.selectpicker').selectpicker('refresh');
-
-                    document.getElementById('conselhos-container').style.display = 'none';
-                    document.getElementById('freguesias-container').style.display = 'none';
-                    document.getElementById('zonas-container').style.display = 'none';
-                    document.getElementById('lugares-container').style.display = 'none';
 
                 } else {
                     console.error('Erro ao buscar conselhos');
@@ -177,8 +178,6 @@
                 return;
             }
 
-            document.getElementById('lugares-container').style.display = 'none';
-
             try {
                 const response = await fetch('/lugares', {
                     method: 'POST',
@@ -208,11 +207,29 @@
             }
         }
 
+        function showDescription() {
+            const ilhaId = document.getElementById('ilha').value;
+            const descriptions = {
+                1: "A ilha de Santo Antão é um lugar de beleza inigualável.\n\nSituada na parte noroeste de Cabo Verde, a partir do momento em que se põe os pés na ilha, o contraste das paisagens é inesperado e avassalador.\n\nA magnitude da ilha, com as suas extensas paisagens rochosas, vasto mar e vales verdejantes, oferece uma experiência única.\n\nSanto Antão foi descoberta em 1462 por exploradores portugueses e é um território com influências europeias, africanas e sul-americanas.\n\nA capital de Santo Antão é Porto Novo, e outras cidades importantes da ilha incluem Ribeira Grande e Paul.\n\nSanto Antão é terra natal de vários músicos, artistas e escritores, incluindo o poeta Corsino Fortes, e detém um património cultural rico que mistura influências africanas, portuguesas e brasileiras.\n\nA música e a dança tradicionais são uma parte importante da vida na ilha, sendo a morna, a coladeira e o funaná os estilos mais populares.",
+                2: "Marcos"
+            };
+
+            if (descriptions[ilhaId]) {
+                document.getElementById('description-content').innerText = descriptions[ilhaId];
+                document.getElementById('description-box').style.display = 'block';
+                document.getElementById('additional-box').style.display = 'block';
+            } else {
+                document.getElementById('description-box').style.display = 'none';
+                document.getElementById('additional-box').style.display = 'none';
+            }
+        }
+
         function generateImage() {
-            const ilha = document.getElementById('ilha').value;
-            const imageUrl = ilha ? `/static/${ilha}.jpg` : '/static/CaboVerde.jpg';
+            const ilhaId = document.getElementById('ilha').value;
+            const imageUrl = ilhaId ? `/static/${ilhaId}.jpg` : '/static/CaboVerde.jpg';
             document.body.style.backgroundImage = `url(${imageUrl})`;
-            document.body.className = ilha ? 'island' : 'cabo-verde';
+            document.body.style.backgroundSize = 'cover';
+            document.body.className = ilhaId ? 'island' : 'cabo-verde';
         }
 
         // Set initial background image
