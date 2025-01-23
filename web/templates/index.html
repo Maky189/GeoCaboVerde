@@ -47,11 +47,12 @@
             </div>
         </form>
     </div>
+    </div>
     <div class="description-box" id="description-box" style="display: none;">
-        <p id="description-content"></p>
+        <p id="description-content" style="font-family: Roboto, font-size: 20px, font-weight : bold" ></p>
     </div>
     <div class="additional-box" id="additional-box" style="display: none;">
-        <p id="additional-content">Conteúdo adicional aqui.</p>
+        <p id="additional-content">Feito por Marcos Gomes</p>
     </div>
 
     <script>
@@ -210,8 +211,15 @@
         function showDescription() {
             const ilhaId = document.getElementById('ilha').value;
             const descriptions = {
-                1: "A ilha de Santo Antão é um lugar de beleza inigualável.\n\nSituada na parte noroeste de Cabo Verde, a partir do momento em que se põe os pés na ilha, o contraste das paisagens é inesperado e avassalador.\n\nA magnitude da ilha, com as suas extensas paisagens rochosas, vasto mar e vales verdejantes, oferece uma experiência única.\n\nSanto Antão foi descoberta em 1462 por exploradores portugueses e é um território com influências europeias, africanas e sul-americanas.\n\nA capital de Santo Antão é Porto Novo, e outras cidades importantes da ilha incluem Ribeira Grande e Paul.\n\nSanto Antão é terra natal de vários músicos, artistas e escritores, incluindo o poeta Corsino Fortes, e detém um património cultural rico que mistura influências africanas, portuguesas e brasileiras.\n\nA música e a dança tradicionais são uma parte importante da vida na ilha, sendo a morna, a coladeira e o funaná os estilos mais populares.",
-                2: "Marcos"
+                1: "Santo Antão, a segunda maior ilha de Cabo Verde, é um paraíso para os amantes da natureza e das aventuras ao ar livre.\nConhecida por suas paisagens montanhosas dramáticas, vales verdejantes e trilhas espetaculares, a ilha é um dos destinos mais fascinantes do arquipélago, ideal para quem busca explorar cenários de tirar o fôlego.",
+                2: "São Vicente é uma das ilhas mais vibrantes e culturais do arquipélago de Cabo Verde, localizada no Oceano Atlântico.\nConhecida como a ilha da música, São Vicente se destaca por sua rica herança cultural, influenciada por tradições africanas, portuguesas e caribenhas.\nA capital da ilha, Mindelo, é considerada o coração cultural do país, famosa por suas coloridas festividades, como o Carnaval e o Festival da Baía das Gatas, além de sua animada vida noturna.",
+                3: "São Nicolau é uma das ilhas mais encantadoras e autênticas de Cabo Verde, situada no grupo de ilhas do Barlavento.\nConhecida por suas paisagens montanhosas impressionantes, vales férteis e uma atmosfera tranquila, é o destino ideal para quem busca um refúgio longe do agito.\nA ilha é famosa por sua beleza natural, destacando-se o Monte Gordo, um parque natural com uma rica biodiversidade e trilhas perfeitas para caminhadas e ecoturismo.",
+                4: "A ilha do Sal, parte do arquipélago de Cabo Verde, é um verdadeiro paraíso para os amantes do sol, praia e esportes aquáticos.\nConhecida por suas paisagens desérticas, praias de areia dourada e águas cristalinas de um azul turquesa hipnotizante, o Sal é uma das ilhas mais visitadas do país, atraindo turistas de todo o mundo.",
+                5: "A ilha da Boa Vista, uma das mais deslumbrantes de Cabo Verde, é conhecida por suas paisagens paradisíacas e intocadas.\nParte do grupo de ilhas do Barlavento, Boa Vista é um destino perfeito para quem busca tranquilidade, praias extensas e uma conexão genuína com a natureza.\nSuas areias douradas e águas cristalinas a tornam um dos locais mais encantadores do arquipélago, ideal para relaxar e contemplar a beleza do Atlântico.",
+                6: "A ilha do Maio, parte do grupo de ilhas do Sotavento em Cabo Verde, é um verdadeiro tesouro escondido, ideal para quem busca paz, autenticidade e natureza intocada.\nConhecida por suas extensas praias de areia branca, paisagens tranquilas e atmosfera acolhedora, Maio oferece um ritmo de vida sereno, perfeito para uma fuga relaxante.",
+                7: "Santiago, a maior e mais populosa ilha de Cabo Verde, é o coração histórico, cultural e econômico do arquipélago.\nConhecida como o berço da nação cabo-verdiana, Santiago oferece uma rica combinação de paisagens naturais deslumbrantes, herança cultural vibrante e história marcante.\nA capital do país, Praia, está localizada em Santiago e é uma cidade dinâmica que combina o moderno com o tradicional. ",
+                8 : "A ilha do Fogo, uma das mais icônicas de Cabo Verde, é um destino fascinante e singular, conhecido por sua paisagem vulcânica dramática e seu espírito autêntico.\nDominada pelo majestoso Pico do Fogo, um vulcão ativo com 2.829 metros de altitude, é o ponto mais alto do arquipélago e oferece vistas impressionantes e uma experiência inesquecível para os amantes de aventura.",
+                9: "A ilha Brava, a menor e mais charmosa de Cabo Verde, é conhecida como a Ilha das Flores devido à abundância de vegetação e flores coloridas que adornam sua paisagem.\nLocalizada no extremo sudoeste do arquipélago, Brava é um refúgio de tranquilidade e beleza natural, perfeita para quem busca paz, autenticidade e um contato íntimo com a natureza.",
             };
 
             if (descriptions[ilhaId]) {
