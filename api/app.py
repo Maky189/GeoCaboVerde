@@ -50,13 +50,28 @@ def update_ilhas():
 @app.route('/ilhas', methods=['DELETE'])
 def delete_ilhas():
     data = request.get_json()
-    ilha = data.get("ilha")
+    ilha = data.get("id")
     
     if not ilha:
         return jsonify({"error": "Por favor insira um nome de ilha"}), 400
     
     try:
-        db.session.execute(text("DELETE FROM ilhas WHERE nome = :ilha"), {"ilha": ilha})
+        db.session.execute(text("DELETE FROM ilhas WHERE id = :ilha"), {"ilha": ilha})
+        db.session.commit()
+        return jsonify({"success": True})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/ilhas', methods=['PUT'])
+def add_ilhas():
+    data = request.get_json()
+    nome = data.get("nome")
+    
+    if not nome:
+        return jsonify({"error": "Por favor insira um nome de ilha"}), 400
+    
+    try:
+        db.session.execute(text("INSERT INTO ilhas (nome) VALUES (:nome)"), {"nome": nome})
         db.session.commit()
         return jsonify({"success": True})
     except Exception as e:
@@ -77,7 +92,23 @@ def conselhos():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
-@app.route('/conselhos', methods=['UPDATE'])
+@app.route('/conselhos', methods=['PUT'])
+def add_conselhos():
+    data = request.get_json()
+    nome = data.get("nome")
+    ilha = data.get("ilha")
+    
+    if not nome:
+        return jsonify({"error": "Por favor insira um nome de conselho"}), 400
+    
+    try:
+        db.session.execute(text("INSERT INTO conselhos (nome, id_ilha) VALUES (:nome, :ilha)"), {"nome": nome, "ilha": ilha})
+        db.session.commit()
+        return jsonify({"success": True})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+@app.route('/conselhos', methods=['PATCH'])
 def update_conselhos():
     data = request.get_json()
     anterior = data.get("id")
@@ -95,14 +126,14 @@ def update_conselhos():
 @app.route('/conselhos', methods=['DELETE'])
 def delete_conselhos():
     data = request.get_json()
-    conselho = data.get("conselho")
+    conselho = data.get("id")
     
     if not conselho:
         return jsonify({"error: Por favor insira um nome de conselho"})
     
     try:
-        db.session.execute(text("DELETE FROM conselhos WHERE nome = :conselho"), {"conselho": conselho})
-        return jsonify([{"success" : True}])
+        db.session.execute(text("DELETE FROM conselhos WHERE id = :conselho"), {"conselho": conselho})
+        return jsonify([{"success" : True, "conselho": conselho}])
     except Exception:
         return jsonify({"error": str(Exception)}), 500
     
@@ -122,7 +153,24 @@ def freguesias():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
-@app.route('/freguesias', methods=['UPDATE'])
+
+@app.route('/freguesias', methods=['PUT'])
+def add_freguesias():
+    data = request.get_json()
+    nome = data.get("nome")
+    conselho = data.get("conselho")
+    
+    if not nome:
+        return jsonify({"error": "Por favor insira um nome de freguesia"}), 400
+    
+    try:
+        db.session.execute(text("INSERT INTO freguesias (nome, id_conselho) VALUES (:nome, :conselho"), {"nome": nome, "conselho": conselho})
+        db.session.commit()
+        return jsonify({"success": True})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+@app.route('/freguesias', methods=['PATCH'])
 def update_freguesias():
     data = request.get_json()
     anterior = data.get("freguesia_anterior")
@@ -166,7 +214,24 @@ def zonas():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
-@app.route('/zonas', methods=['UPDATE'])
+
+@app.route('/zonas', methods=['PUT'])
+def add_zonas():
+    data = request.get_json()
+    nome = data.get("nome")
+    freguesia = data.get("freguesia")
+    
+    if not nome:
+        return jsonify({"error": "Por favor insira um nome de zona"}), 400
+    
+    try:
+        db.session.execute(text("INSERT INTO zonas (nome, id_freguesia) VALUES (:nome, :freguesia"), {"nome": nome, "freguesia": freguesia})
+        db.session.commit()
+        return jsonify({"success": True})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+@app.route('/zonas', methods=['PATCH'])
 def update_zonas():
     data = request.get_json()
     anterior = data.get("zona_anterior")
@@ -211,8 +276,25 @@ def lugares():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
+
+@app.route('/lugares', methods=['PUT'])
+def add_lugares():
+    data = request.get_json()
+    nome = data.get("nome")
+    zona = data.get("zona")
     
-@app.route('/lugares', methods=['UPDATE'])
+    if not nome:
+        return jsonify({"error": "Por favor insira um nome de lugar"}), 400
+    
+    try:
+        db.session.execute(text("INSERT INTO lugares (nome, id_zona) VALUES (:nome, :zona"), {"nome": nome, "zona": zona})
+        db.session.commit()
+        return jsonify({"success": True})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+    
+@app.route('/lugares', methods=['PATCH'])
 def update_lugares():
     data = request.get_json()
     anterior = data.get("lugar_anterior")

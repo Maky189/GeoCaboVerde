@@ -1,5 +1,5 @@
 create table zonas (
-    id INT,
+    id INT AUTO_INCREMENT,
     nome VARCHAR (255),
     id_freguesia INT,
     PRIMARY KEY (id),

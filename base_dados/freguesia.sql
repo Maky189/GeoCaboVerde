@@ -1,5 +1,5 @@
 create table freguesias (
-    id INT,
+    id INT AUTO_INCREMENT,
     nome varchar (255),
     id_conselho INT,
     PRIMARY KEY (id),

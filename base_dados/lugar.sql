@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS lugares (
-    id INT,
+    id INT AUTO_INCREMENT,
     nome VARCHAR (255) NOT NULL,
     id_zona INT,
     PRIMARY KEY (id),

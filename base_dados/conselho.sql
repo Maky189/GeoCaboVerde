@@ -1,5 +1,5 @@
 create table conselhos (
-    id INT,
+    id INT AUTO_INCREMENT,
     nome VARCHAR(255) not null,
     id_ilha INT NOT NULL,
     PRIMARY KEY (id),
