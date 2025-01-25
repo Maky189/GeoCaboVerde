@@ -4,6 +4,7 @@ from models import db
 from helpers import login_required
 from sqlalchemy.sql import text, bindparam
 from flask_session import Session
+from flask_cors import CORS
 from werkzeug.security import check_password_hash, generate_password_hash
 
 app = Flask(__name__)
@@ -12,6 +13,8 @@ app.config.from_object(Config)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
+
+CORS(app)
 
 db.init_app(app)
 
@@ -23,46 +26,43 @@ def after_request(response):
     return response
 
 @app.route('/ilhas', methods=['GET'])
-
 def get_ilhas():
     result = db.session.execute(text("SELECT id, nome FROM ilhas"))
     ilhas = [{'id': row[0], 'nome': row[1]} for row in result]
     return jsonify(ilhas)
 
-@app.route('/ilhas', methods=['UPDATE'])
-
+@app.route('/ilhas', methods=['PATCH'])
 def update_ilhas():
     data = request.get_json()
-    anterior = data.get("ilha_anterior")
-    atual = data.get("ilha_atual")
+    ilha_id = data.get("id")
+    novo_nome = data.get("nome")
     
-    if not anterior or not atual:
-        return jsonify({"error: Por favor insira um nome de ilha"})
+    if not ilha_id or not novo_nome:
+        return jsonify({"error": "Por favor insira um id e um novo nome de ilha"}), 400
     
     try:
-        db.session.execute(text("UPDATE ilhas set nome = :atual WHERE nome = :anterior"), {"atual": atual}, {"anterior": anterior})
-        return jsonify([{"success" : True}])
-    except Exception:
-        return jsonify({"error": str(Exception)}), 500
+        db.session.execute(text("UPDATE ilhas SET nome = :novo_nome WHERE id = :ilha_id"), {"novo_nome": novo_nome, "ilha_id": ilha_id})
+        db.session.commit()
+        return jsonify({"success": True})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/ilhas', methods=['DELETE'])
-
 def delete_ilhas():
     data = request.get_json()
     ilha = data.get("ilha")
     
     if not ilha:
-        return jsonify({"error: Por favor insira um nome de ilha"})
+        return jsonify({"error": "Por favor insira um nome de ilha"}), 400
     
     try:
         db.session.execute(text("DELETE FROM ilhas WHERE nome = :ilha"), {"ilha": ilha})
-        return jsonify([{"success" : True}])
-    except Exception:
-        return jsonify({"error": str(Exception)}), 500
-    
+        db.session.commit()
+        return jsonify({"success": True})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/conselhos', methods=['POST'])
-
 def conselhos():
     data = request.get_json()
     ilha = data.get("id")
@@ -78,23 +78,21 @@ def conselhos():
         return jsonify({"error": str(e)}), 500
     
 @app.route('/conselhos', methods=['UPDATE'])
-
 def update_conselhos():
     data = request.get_json()
-    anterior = data.get("conselho_anterior")
+    anterior = data.get("id")
     atual = data.get("conselho_atual")
     
     if not anterior or not atual:
         return jsonify({"error: Por favor insira um nome de conselho"})
     
     try:
-        db.session.execute(text("UPDATE conselhos set nome = :atual WHERE nome = :anterior"), {"atual": atual}, {"anterior": anterior})
+        db.session.execute(text("UPDATE conselhos set nome = :atual WHERE id = :anterior"), {"atual": atual, "anterior": anterior})
         return jsonify([{"success" : True}])
     except Exception:
         return jsonify({"error": str(Exception)}), 500
     
 @app.route('/conselhos', methods=['DELETE'])
-
 def delete_conselhos():
     data = request.get_json()
     conselho = data.get("conselho")
@@ -110,7 +108,6 @@ def delete_conselhos():
     
 
 @app.route('/freguesias', methods=['POST'])
-
 def freguesias():
     data = request.get_json()
     conselho = data.get("id")
@@ -126,7 +123,6 @@ def freguesias():
         return jsonify({"error": str(e)}), 500
     
 @app.route('/freguesias', methods=['UPDATE'])
-
 def update_freguesias():
     data = request.get_json()
     anterior = data.get("freguesia_anterior")
@@ -136,13 +132,12 @@ def update_freguesias():
         return jsonify({"error: Por favor insira um nome de freguesia"})
     
     try:
-        db.session.execute(text("UPDATE freguesias set nome = :atual WHERE nome = :anterior"), {"atual": atual}, {"anterior": anterior})
+        db.session.execute(text("UPDATE freguesias set nome = :atual WHERE nome = :anterior"), {"atual": atual, "anterior": anterior})
         return jsonify([{"success" : True}])
     except Exception:
         return jsonify({"error": str(Exception)}), 500
     
 @app.route('/freguesias', methods=['DELETE'])
-
 def delete_freguesias():
     data = request.get_json()
     freguesia = data.get("freguesia")
@@ -157,7 +152,6 @@ def delete_freguesias():
         return jsonify({"error": str(Exception)}), 500
     
 @app.route('/zonas', methods=['POST'])
-
 def zonas():
     data = request.get_json()
     freguesia = data.get("id")
@@ -173,7 +167,6 @@ def zonas():
         return jsonify({"error": str(e)}), 500
     
 @app.route('/zonas', methods=['UPDATE'])
-
 def update_zonas():
     data = request.get_json()
     anterior = data.get("zona_anterior")
@@ -183,14 +176,13 @@ def update_zonas():
         return jsonify({"error: Por favor insira um nome de zona"})
     
     try:
-        db.session.execute(text("UPDATE zonas set nome = :atual WHERE nome = :anterior"), {"atual": atual}, {"anterior": anterior})
+        db.session.execute(text("UPDATE zonas set nome = :atual WHERE nome = :anterior"), {"atual": atual, "anterior": anterior})
         return jsonify([{"success" : True}])
     except Exception:
         return jsonify({"error": str(Exception)}), 500
     
 
 @app.route('/zonas', methods=['DELETE'])
-
 def delete_zonas():
     data = request.get_json()
     zona = data.get("zona")
@@ -205,7 +197,6 @@ def delete_zonas():
         return jsonify({"error": str(Exception)}), 500
     
 @app.route('/lugares', methods=['POST'])
-
 def lugares():
     data = request.get_json()
     zona = data.get("id")
@@ -222,7 +213,6 @@ def lugares():
     
     
 @app.route('/lugares', methods=['UPDATE'])
-
 def update_lugares():
     data = request.get_json()
     anterior = data.get("lugar_anterior")
@@ -232,14 +222,13 @@ def update_lugares():
         return jsonify({"error: Por favor insira um nome de lugar"})
     
     try:
-        db.session.execute(text("UPDATE lugares set nome = :atual WHERE nome = :anterior"), {"atual": atual}, {"anterior": anterior})
+        db.session.execute(text("UPDATE lugares set nome = :atual WHERE nome = :anterior"), {"atual": atual, "anterior": anterior})
         return jsonify([{"success" : True}])
     except Exception:
         return jsonify({"error": str(Exception)}), 500
     
 
 @app.route('/lugares', methods=['DELETE'])
-
 def delete_lugares():
     data = request.get_json()
     lugar = data.get("lugar")

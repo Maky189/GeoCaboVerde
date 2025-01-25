@@ -269,7 +269,7 @@
         function updateModalTitle() {
             const ilhaSelect = document.getElementById('ilha');
             const selectedOption = ilhaSelect.options[ilhaSelect.selectedIndex];
-            const ilhaNome = selectedOption ? selectedOption.getAttribute('data-nome') : null;
+            const ilhaNome = selectedOption ? selectedOption.getAttribute('data-nome') : selectedOption.textContent;
             const infoButton = document.getElementById('infoButton');
             const modalTitle = document.getElementById('ilhaModalLabel');
 
@@ -284,55 +284,61 @@
         async function updateIlhaName(event) {
             event.preventDefault();
             const ilhaSelect = document.getElementById('ilha');
-            const selectedOption = ilhaSelect.options[ilhaSelect.selectedIndex];
-            const ilhaNome = selectedOption ? selectedOption.getAttribute('data-nome') : null;
+            const ilhaId = ilhaSelect.value;
             const newIlhaName = document.getElementById('newIlhaName').value;
 
-            if (ilhaNome && newIlhaName) {
+            if (ilhaId && newIlhaName) {
                 try {
                     const response = await fetch('http://localhost:5000/ilhas', {
-                        method: 'UPDATE',
+                        method: 'PATCH',
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ ilha_anterior: ilhaNome, ilha_atual: newIlhaName })
+                        body: JSON.stringify({ id: ilhaId, nome: newIlhaName })
                     });
 
                     if (response.ok) {
                         alert('Nome da ilha alterado com sucesso!');
                         location.reload();
                     } else {
-                        console.error('Erro ao alterar o nome da ilha');
+                        const errorData = await response.json();
+                        console.error('Erro ao alterar o nome da ilha:', errorData.error);
+                        alert('Erro ao alterar o nome da ilha: ' + errorData.error);
                     }
                 } catch (error) {
                     console.error('Erro ao alterar o nome da ilha:', error);
+                    alert('Erro ao alterar o nome da ilha: ' + error.message);
                 }
+            } else {
+                alert('Selecione uma ilha e insira um novo nome');
             }
         }
 
         async function deleteIlha() {
             const ilhaSelect = document.getElementById('ilha');
-            const selectedOption = ilhaSelect.options[ilhaSelect.selectedIndex];
-            const ilhaNome = selectedOption ? selectedOption.getAttribute('data-nome') : null;
+            const ilhaId = ilhaSelect.value;
 
-            if (ilhaNome) {
+            if (ilhaId) {
                 try {
                     const response = await fetch('http://localhost:5000/ilhas', {
                         method: 'DELETE',
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ ilha: ilhaNome })
+                        body: JSON.stringify({ id: ilhaId })
                     });
 
                     if (response.ok) {
                         alert('Ilha deletada com sucesso!');
                         location.reload();
                     } else {
-                        console.error('Erro ao deletar a ilha');
+                        const errorData = await response.json();
+                        console.error('Erro ao deletar a ilha:', errorData.error);
+                        alert('Erro ao deletar a ilha: ' + errorData.error);
                     }
                 } catch (error) {
                     console.error('Erro ao deletar a ilha:', error);
+                    alert('Erro ao deletar a ilha: ' + error.message);
                 }
             }
         }
