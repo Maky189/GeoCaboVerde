@@ -10,12 +10,15 @@
         <form class="d-flex flex-wrap">
             <div class="mb-3 me-3">
                 <label for="ilha" class="form-label">Selecione uma Ilha</label>
-                <select class="form-select selectpicker" id="ilha" name="ilha" onchange="fetchConselhos(); generateImage(); showDescription();" data-live-search="true">
+                <select class="form-select selectpicker" id="ilha" name="ilha" onchange="fetchConselhos(); generateImage(); showDescription(); updateModalTitle();" data-live-search="true">
                     <option value="" disabled selected>Selecione uma Ilha</option>
                     {% for ilha in ilhas %}
-                        <option value="{{ ilha.id }}">{{ ilha.nome }}</option>
+                        <option value="{{ ilha.id }}" data-nome="{{ ilha.nome }}">{{ ilha.nome }}</option>
                     {% endfor %}
                 </select>
+                <button type="button" class="btn btn-primary" id="infoButton" data-bs-toggle="modal" data-bs-target="#ilhaModal" style="display: none;">
+                    Info
+                </button>
             </div>
             <div class="mb-3 me-3" id="conselhos-container" style="display: none;">
                 <label for="conselho" class="form-label">Selecione um Conselho</label>
@@ -47,12 +50,35 @@
             </div>
         </form>
     </div>
-    </div>
     <div class="description-box" id="description-box" style="display: none;">
         <p id="description-content" style="font-family: Roboto, font-size: 20px, font-weight : bold" ></p>
     </div>
     <div class="additional-box" id="additional-box" style="display: none;">
         <p id="additional-content">Feito por Marcos Gomes</p>
+    </div>
+
+    <div class="modal fade" id="ilhaModal" tabindex="-1" aria-labelledby="ilhaModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ilhaModalLabel">Opções sobre a ilha</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="updateIlhaForm">
+                        <div class="mb-3">
+                            <label for="newIlhaName" class="form-label">Novo Nome da Ilha</label>
+                            <input type="text" class="form-control" id="newIlhaName" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Alterar Nome</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" onclick="deleteIlha()">Deletar Ilha</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -240,9 +266,83 @@
             document.body.className = ilhaId ? 'island' : 'cabo-verde';
         }
 
-        // Set initial background image
+        function updateModalTitle() {
+            const ilhaSelect = document.getElementById('ilha');
+            const selectedOption = ilhaSelect.options[ilhaSelect.selectedIndex];
+            const ilhaNome = selectedOption ? selectedOption.getAttribute('data-nome') : null;
+            const infoButton = document.getElementById('infoButton');
+            const modalTitle = document.getElementById('ilhaModalLabel');
+
+            if (ilhaNome) {
+                modalTitle.textContent = `Opções sobre a ilha ${ilhaNome}`;
+                infoButton.style.display = 'inline-block';
+            } else {
+                infoButton.style.display = 'none';
+            }
+        }
+
+        async function updateIlhaName(event) {
+            event.preventDefault();
+            const ilhaSelect = document.getElementById('ilha');
+            const selectedOption = ilhaSelect.options[ilhaSelect.selectedIndex];
+            const ilhaNome = selectedOption ? selectedOption.getAttribute('data-nome') : null;
+            const newIlhaName = document.getElementById('newIlhaName').value;
+
+            if (ilhaNome && newIlhaName) {
+                try {
+                    const response = await fetch('http://localhost:5000/ilhas', {
+                        method: 'UPDATE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ ilha_anterior: ilhaNome, ilha_atual: newIlhaName })
+                    });
+
+                    if (response.ok) {
+                        alert('Nome da ilha alterado com sucesso!');
+                        location.reload();
+                    } else {
+                        console.error('Erro ao alterar o nome da ilha');
+                    }
+                } catch (error) {
+                    console.error('Erro ao alterar o nome da ilha:', error);
+                }
+            }
+        }
+
+        async function deleteIlha() {
+            const ilhaSelect = document.getElementById('ilha');
+            const selectedOption = ilhaSelect.options[ilhaSelect.selectedIndex];
+            const ilhaNome = selectedOption ? selectedOption.getAttribute('data-nome') : null;
+
+            if (ilhaNome) {
+                try {
+                    const response = await fetch('http://localhost:5000/ilhas', {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ ilha: ilhaNome })
+                    });
+
+                    if (response.ok) {
+                        alert('Ilha deletada com sucesso!');
+                        location.reload();
+                    } else {
+                        console.error('Erro ao deletar a ilha');
+                    }
+                } catch (error) {
+                    console.error('Erro ao deletar a ilha:', error);
+                }
+            }
+        }
+
+        document.getElementById('updateIlhaForm').addEventListener('submit', updateIlhaName);
+
+        // Set initial background image and modal title
         document.addEventListener('DOMContentLoaded', function() {
             generateImage();
+            updateModalTitle();
             $('.selectpicker').selectpicker();
         });
     </script>
