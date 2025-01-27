@@ -42,17 +42,23 @@
             </div>
             <div class="mb-3 me-3" id="zonas-container" style="display: none;">
                 <label for="zona" class="form-label">Selecione uma Zona</label>
-                <select class="form-select selectpicker" id="zona" name="zona" onchange="fetchLugares()" data-live-search="true">
+                <select class="form-select selectpicker" id="zona" name="zona" onchange="fetchLugares(); updateZonaModalTitle();" data-live-search="true">
                     <option value="" disabled selected>Selecione uma Zona</option>
                     <!-- Zonas will be populated here -->
                 </select>
+                <button type="button" class="btn btn-primary" id="zonaInfoButton" data-bs-toggle="modal" data-bs-target="#zonaModal" style="display: none;">
+                    Opções
+                </button>
             </div>
             <div class="mb-3 me-3" id="lugares-container" style="display: none;">
                 <label for="lugar" class="form-label">Selecione um Lugar</label>
-                <select class="form-select selectpicker" id="lugar" name="lugar" data-live-search="true">
+                <select class="form-select selectpicker" id="lugar" name="lugar" data-live-search="true" onchange="updateLugarModalTitle()">
                     <option value="" disabled selected>Selecione um Lugar</option>
                     <!-- Lugares will be populated here -->
                 </select>
+                <button type="button" class="btn btn-primary" id="lugarInfoButton" data-bs-toggle="modal" data-bs-target="#lugarModal" style="display: none;">
+                    Opções
+                </button>
             </div>
         </form>
     </div>
@@ -132,6 +138,56 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" onclick="deleteFreguesia()">Deletar Freguesia</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="zonaModal" tabindex="-1" aria-labelledby="zonaModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="zonaModalLabel">Opções sobre a zona</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="updateZonaForm">
+                        <div class="mb-3">
+                            <label for="newZonaName" class="form-label">Novo Nome da Zona</label>
+                            <input type="text" class="form-control" id="newZonaName" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Alterar Nome</button>
+                        <button type="button" class="btn btn-success" onclick="createZona()">Criar Nova Zona</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" onclick="deleteZona()">Deletar Zona</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="lugarModal" tabindex="-1" aria-labelledby="lugarModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="lugarModalLabel">Opções sobre o lugar</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="updateLugarForm">
+                        <div class="mb-3">
+                            <label for="newLugarName" class="form-label">Novo Nome do Lugar</label>
+                            <input type="text" class="form-control" id="newLugarName" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Alterar Nome</button>
+                        <button type="button" class="btn btn-success" onclick="createLugar()">Criar Novo Lugar</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" onclick="deleteLugar()">Deletar Lugar</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                 </div>
             </div>

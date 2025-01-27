@@ -505,9 +505,227 @@ async function createFreguesia() {
     }
 }
 
+function updateZonaModalTitle() {
+    const zonaSelect = document.getElementById('zona');
+    const selectedOption = zonaSelect.options[zonaSelect.selectedIndex];
+    const zonaNome = selectedOption ? selectedOption.textContent : null;
+    const zonaInfoButton = document.getElementById('zonaInfoButton');
+    const modalTitle = document.getElementById('zonaModalLabel');
+
+    if (zonaNome) {
+        modalTitle.textContent = `Opções sobre a zona ${zonaNome}`;
+        zonaInfoButton.style.display = 'inline-block';
+    } else {
+        zonaInfoButton.style.display = 'none';
+    }
+}
+
+async function updateZonaName(event) {
+    event.preventDefault();
+    const zonaSelect = document.getElementById('zona');
+    const zonaId = zonaSelect.value;
+    const newZonaName = document.getElementById('newZonaName').value;
+
+    if (zonaId && newZonaName) {
+        try {
+            const response = await fetch('http://localhost:5000/zonas', {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ zona_anterior: zonaId, zona_atual: newZonaName })
+            });
+
+            if (response.ok) {
+                alert('Nome da zona alterado com sucesso!');
+                location.reload();
+            } else {
+                const errorData = await response.json();
+                console.error('Erro ao alterar o nome da zona:', errorData.error);
+                alert('Erro ao alterar o nome da zona: ' + errorData.error);
+            }
+        } catch (error) {
+            console.error('Erro ao alterar o nome da zona:', error);
+            alert('Erro ao alterar o nome da zona: ' + error.message);
+        }
+    } else {
+        alert('Selecione uma zona e insira um novo nome');
+    }
+}
+
+async function deleteZona() {
+    const zonaSelect = document.getElementById('zona');
+    const zonaId = zonaSelect.value;
+
+    if (zonaId) {
+        try {
+            const response = await fetch('http://localhost:5000/zonas', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ zona: zonaId })
+            });
+
+            if (response.ok) {
+                alert('Zona deletada com sucesso!');
+                location.reload();
+            } else {
+                const errorData = await response.json();
+                console.error('Erro ao deletar a zona:', errorData.error);
+                alert('Erro ao deletar a zona: ' + errorData.error);
+            }
+        } catch (error) {
+            console.error('Erro ao deletar a zona:', error);
+            alert('Erro ao deletar a zona: ' + error.message);
+        }
+    }
+}
+
+async function createZona() {
+    const newZonaName = document.getElementById('newZonaName').value;
+    const freguesiaId = document.getElementById('freguesia').value;
+
+    if (newZonaName && freguesiaId) {
+        try {
+            const response = await fetch('http://localhost:5000/zonas', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ nome: newZonaName, freguesia: freguesiaId })
+            });
+
+            if (response.ok) {
+                alert('Nova zona criada com sucesso!');
+                location.reload();
+            } else {
+                const errorData = await response.json();
+                console.error('Erro ao criar nova zona:', errorData.error);
+                alert('Erro ao criar nova zona: ' + errorData.error);
+            }
+        } catch (error) {
+            console.error('Erro ao criar nova zona:', error);
+            alert('Erro ao criar nova zona: ' + error.message);
+        }
+    } else {
+        alert('Insira um nome para a nova zona e selecione uma freguesia');
+    }
+}
+
+function updateLugarModalTitle() {
+    const lugarSelect = document.getElementById('lugar');
+    const selectedOption = lugarSelect.options[lugarSelect.selectedIndex];
+    const lugarNome = selectedOption ? selectedOption.textContent : null;
+    const lugarInfoButton = document.getElementById('lugarInfoButton');
+    const modalTitle = document.getElementById('lugarModalLabel');
+
+    if (lugarNome) {
+        modalTitle.textContent = `Opções sobre o lugar ${lugarNome}`;
+        lugarInfoButton.style.display = 'inline-block';
+    } else {
+        lugarInfoButton.style.display = 'none';
+    }
+}
+
+async function updateLugarName(event) {
+    event.preventDefault();
+    const lugarSelect = document.getElementById('lugar');
+    const lugarId = lugarSelect.value;
+    const newLugarName = document.getElementById('newLugarName').value;
+
+    if (lugarId && newLugarName) {
+        try {
+            const response = await fetch('http://localhost:5000/lugares', {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ lugar_anterior: lugarId, lugar_atual: newLugarName })
+            });
+
+            if (response.ok) {
+                alert('Nome do lugar alterado com sucesso!');
+                location.reload();
+            } else {
+                const errorData = await response.json();
+                console.error('Erro ao alterar o nome do lugar:', errorData.error);
+                alert('Erro ao alterar o nome do lugar: ' + errorData.error);
+            }
+        } catch (error) {
+            console.error('Erro ao alterar o nome do lugar:', error);
+            alert('Erro ao alterar o nome do lugar: ' + error.message);
+        }
+    } else {
+        alert('Selecione um lugar e insira um novo nome');
+    }
+}
+
+async function deleteLugar() {
+    const lugarSelect = document.getElementById('lugar');
+    const lugarId = lugarSelect.value;
+
+    if (lugarId) {
+        try {
+            const response = await fetch('http://localhost:5000/lugares', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ lugar: lugarId })
+            });
+
+            if (response.ok) {
+                alert('Lugar deletado com sucesso!');
+                location.reload();
+            } else {
+                const errorData = await response.json();
+                console.error('Erro ao deletar o lugar:', errorData.error);
+                alert('Erro ao deletar o lugar: ' + errorData.error);
+            }
+        } catch (error) {
+            console.error('Erro ao deletar o lugar:', error);
+            alert('Erro ao deletar o lugar: ' + error.message);
+        }
+    }
+}
+
+async function createLugar() {
+    const newLugarName = document.getElementById('newLugarName').value;
+    const zonaId = document.getElementById('zona').value;
+
+    if (newLugarName && zonaId) {
+        try {
+            const response = await fetch('http://localhost:5000/lugares', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ nome: newLugarName, zona: zonaId })
+            });
+
+            if (response.ok) {
+                alert('Novo lugar criado com sucesso!');
+                location.reload();
+            } else {
+                const errorData = await response.json();
+                console.error('Erro ao criar novo lugar:', errorData.error);
+                alert('Erro ao criar novo lugar: ' + errorData.error);
+            }
+        } catch (error) {
+            console.error('Erro ao criar novo lugar:', error);
+            alert('Erro ao criar novo lugar: ' + error.message);
+        }
+    } else {
+        alert('Insira um nome para o novo lugar e selecione uma zona');
+    }
+}
+
 document.getElementById('updateIlhaForm').addEventListener('submit', updateIlhaName);
 document.getElementById('updateConselhoForm').addEventListener('submit', updateConselhoName);
 document.getElementById('updateFreguesiaForm').addEventListener('submit', updateFreguesiaName);
+document.getElementById('updateZonaForm').addEventListener('submit', updateZonaName);
+document.getElementById('updateLugarForm').addEventListener('submit', updateLugarName);
 
 // Set initial background image and modal title
 document.addEventListener('DOMContentLoaded', function() {

@@ -245,7 +245,8 @@ def update_zonas():
         return jsonify({"error: Por favor insira um nome de zona"})
     
     try:
-        db.session.execute(text("UPDATE zonas set nome = :atual WHERE nome = :anterior"), {"atual": atual, "anterior": anterior})
+        db.session.execute(text("UPDATE zonas set nome = :atual WHERE id = :anterior"), {"atual": atual, "anterior": anterior})
+        db.session.commit()
         return jsonify([{"success" : True}])
     except Exception:
         return jsonify({"error": str(Exception)}), 500
@@ -260,7 +261,8 @@ def delete_zonas():
         return jsonify({"error: Por favor insira um nome de zona"})
     
     try:
-        db.session.execute(text("DELETE FROM zonas WHERE nome = :zona"), {"zona": zona})
+        db.session.execute(text("DELETE FROM zonas WHERE id = :zona"), {"zona": zona})
+        db.session.commit()
         return jsonify([{"success" : True}])
     except Exception:
         return jsonify({"error": str(Exception)}), 500
@@ -308,7 +310,8 @@ def update_lugares():
         return jsonify({"error: Por favor insira um nome de lugar"})
     
     try:
-        db.session.execute(text("UPDATE lugares set nome = :atual WHERE nome = :anterior"), {"atual": atual, "anterior": anterior})
+        db.session.execute(text("UPDATE lugares set nome = :atual WHERE id = :anterior"), {"atual": atual, "anterior": anterior})
+        db.session.commit()
         return jsonify([{"success" : True}])
     except Exception:
         return jsonify({"error": str(Exception)}), 500
@@ -323,7 +326,8 @@ def delete_lugares():
         return jsonify({"error: Por favor insira um nome de lugar"})
     
     try:
-        db.session.execute(text("DELETE FROM lugares WHERE nome = :lugar"), {"lugar": lugar})
+        db.session.execute(text("DELETE FROM lugares WHERE id = :lugar"), {"lugar": lugar})
+        db.session.commit()
         return jsonify([{"success" : True}])
     except Exception:
         return jsonify({"error": str(Exception)}), 500
