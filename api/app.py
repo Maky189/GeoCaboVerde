@@ -127,12 +127,14 @@ def update_conselhos():
 def delete_conselhos():
     data = request.get_json()
     conselho = data.get("id")
+
     
     if not conselho:
         return jsonify({"error: Por favor insira um nome de conselho"})
     
     try:
         db.session.execute(text("DELETE FROM conselhos WHERE id = :conselho"), {"conselho": conselho})
+        db.session.commit()
         return jsonify([{"success" : True, "conselho": conselho}])
     except Exception:
         return jsonify({"error": str(Exception)}), 500
