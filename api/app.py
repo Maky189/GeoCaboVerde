@@ -166,7 +166,7 @@ def add_freguesias():
         return jsonify({"error": "Por favor insira um nome de freguesia"}), 400
     
     try:
-        db.session.execute(text("INSERT INTO freguesias (nome, id_conselho) VALUES (:nome, :conselho"), {"nome": nome, "conselho": conselho})
+        db.session.execute(text("INSERT INTO freguesias (nome, id_conselho) VALUES (:nome, :conselho)"), {"nome": nome, "conselho": conselho})
         db.session.commit()
         return jsonify({"success": True})
     except Exception as e:
@@ -182,7 +182,8 @@ def update_freguesias():
         return jsonify({"error: Por favor insira um nome de freguesia"})
     
     try:
-        db.session.execute(text("UPDATE freguesias set nome = :atual WHERE nome = :anterior"), {"atual": atual, "anterior": anterior})
+        db.session.execute(text("UPDATE freguesias set nome = :atual WHERE id = :anterior"), {"atual": atual, "anterior": anterior})
+        db.session.commit()
         return jsonify([{"success" : True}])
     except Exception:
         return jsonify({"error": str(Exception)}), 500
@@ -196,7 +197,8 @@ def delete_freguesias():
         return jsonify({"error: Por favor insira um nome de freguesia"})
     
     try:
-        db.session.execute(text("DELETE FROM freguesias WHERE nome = :freguesia"), {"freguesia": freguesia})
+        db.session.execute(text("DELETE FROM freguesias WHERE id = :freguesia"), {"freguesia": freguesia})
+        db.session.commit()
         return jsonify([{"success" : True}])
     except Exception:
         return jsonify({"error": str(Exception)}), 500

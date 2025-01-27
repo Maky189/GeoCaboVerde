@@ -397,8 +397,117 @@ async function createConselho() {
     }
 }
 
+function updateFreguesiaModalTitle() {
+    const freguesiaSelect = document.getElementById('freguesia');
+    const selectedOption = freguesiaSelect.options[freguesiaSelect.selectedIndex];
+    const freguesiaNome = selectedOption ? selectedOption.textContent : null;
+    const freguesiaInfoButton = document.getElementById('freguesiaInfoButton');
+    const modalTitle = document.getElementById('freguesiaModalLabel');
+
+    if (freguesiaNome) {
+        modalTitle.textContent = `Opções sobre a freguesia ${freguesiaNome}`;
+        freguesiaInfoButton.style.display = 'inline-block';
+    } else {
+        freguesiaInfoButton.style.display = 'none';
+    }
+}
+
+async function updateFreguesiaName(event) {
+    event.preventDefault();
+    const freguesiaSelect = document.getElementById('freguesia');
+    const freguesiaId = freguesiaSelect.value;
+    const newFreguesiaName = document.getElementById('newFreguesiaName').value;
+
+    if (freguesiaId && newFreguesiaName) {
+        try {
+            const response = await fetch('http://localhost:5000/freguesias', {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ freguesia_anterior: freguesiaId, freguesia_atual: newFreguesiaName })
+            });
+
+            if (response.ok) {
+                alert('Nome da freguesia alterado com sucesso!');
+                location.reload();
+            } else {
+                const errorData = await response.json();
+                console.error('Erro ao alterar o nome da freguesia:', errorData.error);
+                alert('Erro ao alterar o nome da freguesia: ' + errorData.error);
+            }
+        } catch (error) {
+            console.error('Erro ao alterar o nome da freguesia:', error);
+            alert('Erro ao alterar o nome da freguesia: ' + error.message);
+        }
+    } else {
+        alert('Selecione uma freguesia e insira um novo nome');
+    }
+}
+
+async function deleteFreguesia() {
+    const freguesiaSelect = document.getElementById('freguesia');
+    const freguesiaId = freguesiaSelect.value;
+
+    if (freguesiaId) {
+        try {
+            const response = await fetch('http://localhost:5000/freguesias', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ freguesia: freguesiaId })
+            });
+
+            if (response.ok) {
+                alert('Freguesia deletada com sucesso!');
+                location.reload();
+            } else {
+                const errorData = await response.json();
+                console.error('Erro ao deletar a freguesia:', errorData.error);
+                alert('Erro ao deletar a freguesia: ' + errorData.error);
+            }
+        } catch (error) {
+            console.error('Erro ao deletar a freguesia:', error);
+            alert('Erro ao deletar a freguesia: ' + error.message);
+        }
+    }
+}
+
+async function createFreguesia() {
+    const newFreguesiaName = document.getElementById('newFreguesiaName').value;
+    const conselhoId = document.getElementById('conselho').value;
+
+    if (newFreguesiaName && conselhoId) {
+        try {
+            const response = await fetch('http://localhost:5000/freguesias', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ nome: newFreguesiaName, conselho: conselhoId })
+            });
+
+            if (response.ok) {
+                alert('Nova freguesia criada com sucesso!');
+                location.reload();
+            } else {
+                const errorData = await response.json();
+                console.error('Erro ao criar nova freguesia:', errorData.error);
+                alert('Erro ao criar nova freguesia: ' + errorData.error);
+            }
+        } catch (error) {
+            console.error('Erro ao criar nova freguesia:', error);
+            alert('Erro ao criar nova freguesia: ' + error.message);
+        }
+    } else {
+        alert('Insira um nome para a nova freguesia e selecione um conselho');
+    }
+}
+
 document.getElementById('updateIlhaForm').addEventListener('submit', updateIlhaName);
 document.getElementById('updateConselhoForm').addEventListener('submit', updateConselhoName);
+document.getElementById('updateFreguesiaForm').addEventListener('submit', updateFreguesiaName);
 
 // Set initial background image and modal title
 document.addEventListener('DOMContentLoaded', function() {

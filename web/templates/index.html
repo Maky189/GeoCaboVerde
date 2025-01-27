@@ -32,10 +32,13 @@
             </div>
             <div class="mb-3 me-3" id="freguesias-container" style="display: none;">
                 <label for="freguesia" class="form-label">Selecione uma Freguesia</label>
-                <select class="form-select selectpicker" id="freguesia" name="freguesia" onchange="fetchZonas()" data-live-search="true">
+                <select class="form-select selectpicker" id="freguesia" name="freguesia" onchange="fetchZonas(); updateFreguesiaModalTitle();" data-live-search="true">
                     <option value="" disabled selected>Selecione uma Freguesia</option>
                     <!-- Freguesias will be populated here -->
                 </select>
+                <button type="button" class="btn btn-primary" id="freguesiaInfoButton" data-bs-toggle="modal" data-bs-target="#freguesiaModal" style="display: none;">
+                    Opções
+                </button>
             </div>
             <div class="mb-3 me-3" id="zonas-container" style="display: none;">
                 <label for="zona" class="form-label">Selecione uma Zona</label>
@@ -104,6 +107,31 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" onclick="deleteConselho()">Deletar Conselho</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="freguesiaModal" tabindex="-1" aria-labelledby="freguesiaModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="freguesiaModalLabel">Opções sobre a freguesia</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="updateFreguesiaForm">
+                        <div class="mb-3">
+                            <label for="newFreguesiaName" class="form-label">Novo Nome da Freguesia</label>
+                            <input type="text" class="form-control" id="newFreguesiaName" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Alterar Nome</button>
+                        <button type="button" class="btn btn-success" onclick="createFreguesia()">Criar Nova Freguesia</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" onclick="deleteFreguesia()">Deletar Freguesia</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                 </div>
             </div>
