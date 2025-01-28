@@ -32,11 +32,11 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbar">
-                    {% if session["user_id"] %}
+                    {% if session.get("user_id") %}
                         <ul class="navbar-nav me-auto mt-2">
-                            <li class="nav-item"><a class="nav-link" href="/quote">Pesquisar Ilhas</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/buy">Introduzir Ilhas</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/sell">usuarios</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/pesquisar">Pesquisar Ilhas</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/introduzir">Introduzir Ilhas</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/usuarios">usuarios</a></li>
                             <li class="nav-item"><a class="nav-link" href="/history">Historico</a></li>
                         </ul>
                         <ul class="navbar-nav ms-auto mt-2">

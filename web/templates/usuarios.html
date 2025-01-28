@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Usuários
+{% endblock %}
+
+{% block main %}
+    <h1 class="mb-5">Lista de Usuários</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for usuario in usuarios %}
+                <tr {% if usuario.id == current_user_id %}class="table-success"{% endif %}>
+                    <td>{{ usuario.id }}</td>
+                    <td>{{ usuario.username }}</td>
+                    <td>{% if usuario.id == current_user_id %}Loged In{% else %}Loggged out{% endif %}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

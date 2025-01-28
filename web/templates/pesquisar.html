@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Pesquisar Ilhas
+{% endblock %}
+
+{% block main %}
+    <h1 class="mb-5">Pesquisar Ilhas</h1>
+    <form>
+        <div class="mb-3">
+            <label for="ilha" class="form-label">Selecione uma Ilha</label>
+            <input class="form-control" list="ilhas" id="ilha" name="ilha" placeholder="Digite para pesquisar...">
+            <datalist id="ilhas">
+                {% for ilha in ilhas %}
+                    <option value="{{ ilha.nome }}">
+                {% endfor %}
+            </datalist>
+        </div>
+    </form>
+{% endblock %}

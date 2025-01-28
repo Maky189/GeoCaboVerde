@@ -332,6 +332,12 @@ def delete_lugares():
     except Exception:
         return jsonify({"error": str(Exception)}), 500
     
+@app.route('/usuarios', methods=['GET'])
+def get_users():
+    result = db.session.execute(text("SELECT id, username FROM USERS"))
+    users = [{'id': row[0], 'username': row[1]} for row in result]
+    return jsonify(users)
+    
     
 
 @app.route("/login", methods=["POST"])
@@ -351,8 +357,7 @@ def login():
         return jsonify({"error": "username ou password incorretos"}), 403
 
     session["user_id"] = user.id
-    return jsonify({"success": True})
-
+    return jsonify({"success": True, "user_id": session["user_id"]})
 @app.route("/logout", methods=["POST"])
 @login_required
 def logout():
@@ -383,8 +388,9 @@ def register():
     db.session.commit()
 
     result = db.session.execute(text("SELECT id FROM USERS WHERE username = :username").bindparams(bindparam("username", username)))
-    session["user_id"] = result.fetchone()[0]
-    return jsonify({"success": True})
+    user_id = result.fetchone()[0]
+    session["user_id"] = user_id
+    return jsonify({"success": True, "user_id": user_id})
 
 if __name__ == '__main__':
     with app.app_context():

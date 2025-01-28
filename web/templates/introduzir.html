@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Introduzir Ilha
+{% endblock %}
+
+{% block main %}
+    <h1 class="mb-5">Introduzir Nova Ilha</h1>
+    <form action="/introduzir" method="post">
+        <div class="mb-3">
+            <label for="nome" class="form-label">Nome da Ilha</label>
+            <input type="text" class="form-control" id="nome" name="nome" placeholder="Digite o nome da ilha" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Adicionar Ilha</button>
+    </form>
+{% endblock %}
