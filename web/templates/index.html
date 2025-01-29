@@ -7,7 +7,7 @@
 {% block main %}
     <h1 class="mb-5">Ilhas Cabo Verde</h1>
     <div class="select-box position-relative">
-        <form class="d-flex flex-wrap">
+        <form class="d-flex flex-wrap align-items-center">
             <div class="mb-3 me-3">
                 <label for="ilha" class="form-label">Selecione uma Ilha</label>
                 <select class="form-select selectpicker" id="ilha" name="ilha" onchange="fetchConselhos(); generateImage(); showDescription(); updateModalTitle();" data-live-search="true">
@@ -60,9 +60,12 @@
                     Opções
                 </button>
             </div>
+            <div id="ilha-image-container" class="ms-auto">
+                <img src="/static/Ilhas.png" alt="Ilhas Cabo Verde" id="ilha-image">
+            </div>
         </form>
     </div>
-    <div class="description-box" id="description-box" style="max-height: 70vh; overflow-y: auto;">
+    <div class="description-box" id="description-box" style="max-height: 70vh; overflow-y: auto; display: none;">
         <div class="row">
             <div class="col-md-8">
                 <div id="description-content" class="text-justify font-weight-bold" style="font-family: 'Roboto', sans-serif; font-size: 1.5rem; line-height: 1.8;"></div>
@@ -76,9 +79,6 @@
         </div>
         <div class="image-gallery" id="image-gallery" style="display: none;">
             <!-- Images will be populated here -->
-        </div>
-        <div id="ilha-image-container">
-            <img src="/static/Ilhas.png" alt="Ilhas Cabo Verde" id="ilha-image">
         </div>
     </div>
     <div class="additional-box" id="additional-box" style="display: none;">

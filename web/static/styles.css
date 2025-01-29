@@ -76,9 +76,9 @@ body.island {
 
 #ilha-image-container {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
-    margin-top: 20px;
+    margin-left: auto;
     width: 100px;
     height: 100px;
 }

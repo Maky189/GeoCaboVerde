@@ -31,14 +31,15 @@ function showDescription() {
         document.getElementById('video-placeholder').style.display = 'block';
         document.getElementById('video-iframe').src = videos[ilhaId];
         document.getElementById('ilha-image-container').style.display = 'none';
+        document.getElementById('description-box').style.display = 'block';
     } else {
         document.getElementById('description-content').innerHTML = '';
         document.getElementById('additional-box').style.display = 'none';
         document.getElementById('image-gallery').style.display = 'none';
         document.getElementById('video-placeholder').style.display = 'none';
         document.getElementById('ilha-image-container').style.display = 'flex';
+        document.getElementById('description-box').style.display = 'none';
     }
-    document.getElementById('description-box').style.display = 'block';
 }
 
 function displayImages(ilhaId) {
