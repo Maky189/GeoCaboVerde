@@ -38,6 +38,7 @@ body {
     background-position: center center;
     background-repeat: no-repeat;
     transition: background-image 0.5s ease-in-out;
+    overflow-y: scroll;
 }
 
 /* Specific background size for CaboVerde.jpg */
@@ -65,11 +66,26 @@ body.island {
 
 /* Box styling for select elements */
 .select-box {
+    position: relative;
     background-color: rgba(255, 255, 255, 0.8);
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
+}
+
+#ilha-image-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 20px;
+    width: 100px;
+    height: 100px;
+}
+
+#ilha-image {
+    max-width: 100%;
+    max-height: 100%;
 }
 
 /* Box styling for title */
@@ -83,43 +99,24 @@ body.island {
 }
 
 /* Box styling for description */
-body {
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    transition: background-image 0.5s ease-in-out;
-}
-
-
-body.cabo-verde {
-    background-size: cover;
-    background-position: top center;
-}
-
-
-body.island {
-    background-size: center;
-    background-position: top center;
-}
-
-
-.custom-select {
-    padding: 0.375rem 1.75rem 0.375rem 0.75rem;
-    font-size: 1rem;
-    line-height: 1.5;
-    border: 1px solid #ced4da;
-    border-radius: 0.25rem;
-    appearance: none;
-    background: url('data:image/svg+xml;charset=UTF-8,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 5"%3E%3Cpath fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M2 0L0 2h4zm0 5L0 3h4z"/%3E%3C/svg%3E') no-repeat right 0.75rem center/8px 10px;
-}
 .description-box {
     background-color: rgba(255, 255, 255, 0.8);
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-top: 20px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.5rem;
+    font-weight: bold;
+    line-height: 1.8;
+    max-height: 70vh;
+    overflow-y: auto;
 }
 
+.text-justify {
+    text-align: justify;
+    margin-bottom: 20px;
+}
 
 .additional-box {
     background-color: rgba(255, 255, 255, 0.8);
@@ -127,5 +124,21 @@ body.island {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-top: 20px;
+}
+
+.image-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+    justify-content: space-between;
+}
+
+.image-gallery img {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
