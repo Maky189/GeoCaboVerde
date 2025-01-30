@@ -103,6 +103,3 @@ A API pode ser utilizada em outros projetos para manipulação de dados geográf
 
 ## Contribuição
 Sinta-se à vontade para contribuir com o projeto. Para isso, faça um fork do repositório, crie uma branch para suas alterações e envie um pull request.
-
-## Licença
-Este projeto está licenciado sob a licença MIT.
