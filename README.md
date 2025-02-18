@@ -3,6 +3,9 @@
 ## Contexto
 GeoCaboVerde é uma aplicação web desenvolvida para gerenciar informações geográficas de Cabo Verde. A aplicação permite a manipulação de dados sobre ilhas, conselhos, freguesias, zonas e lugares, além de gerenciar usuários. Utiliza Flask como framework web e SQLAlchemy para interações com o banco de dados.
 
+### Video Demo
+[![GeoCaboVerde](https://ytcards.demolab.com/?id=-jZwlckees8&title=GeoCaboVerde&lang=en&timestamp=1739866273&background_color=%230d1117&title_color=%23ffffff&stats_color=%23dedede&max_title_lines=1&width=250&border_radius=5 "GeoCaboVerde")](https://www.youtube.com/watch?v=-jZwlckees8)
+
 ## Estrutura do Projeto
 O projeto é dividido em duas partes principais:
 1. **API**: Localizada em `api/app.py`, é responsável por fornecer os endpoints para manipulação dos dados.
