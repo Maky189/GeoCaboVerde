@@ -13,6 +13,7 @@ O projeto é dividido em duas partes principais:
 ### Pré-requisitos
 - Python 3.8 ou superior
 - Virtualenv
+- MySql
 
 ### Passos para Instalação
 1. Clone o repositório:
@@ -23,37 +24,29 @@ O projeto é dividido em duas partes principais:
 
 2. Crie e ative um ambiente virtual:
     ```bash
-    python3 -m venv venv
-    source venv/bin/activate
+    python3 -m venv myenv
+    source myenv/bin/activate
     ```
 
 3. Instale as dependências:
     ```bash
     pip install -r requirements.txt
     ```
-
-4. Configure as variáveis de ambiente necessárias no arquivo `.env`:
-    ```bash
-    touch .env
-    echo "FLASK_APP=api/app.py" >> .env
-    echo "FLASK_ENV=development" >> .env
-    echo "DATABASE_URL=<URL_DO_BANCO_DE_DADOS>" >> .env
-    ```
-
-## Dependências
-- Flask
-- Flask-Session
-- Flask-CORS
-- Flask-SQLAlchemy
-- SQLAlchemy
-- Werkzeug
-- PyMySQL
-- SQLAlchemy
-
+4. Crie a base de dados:
+  Certifique-se de que o MySQL está instalado e em execução. Configure as credenciais no arquivo config.py de acordo com seu usuario e password.
+  ```bash
+  sudo mysql -u usuario -p
+  ```
+  ```sql
+  CREATE DATABASE CaboVerde;
+  USE CaboVerde;
+  SOURCE base_dados/create.sql;
+  
+  ```
 ## Como Executar
 1. Inicie o servidor da API:
     ```bash
-    flask run --port 5000
+    flask run
     ```
 
 2. Em outro terminal, inicie o servidor da aplicação web:

@@ -15,13 +15,13 @@ function showDescription() {
     const videos = {
         1: "https://www.youtube.com/embed/wmTFhUo5Ibg?si=gDHwyh4xoz7Pia0W",
         2: "https://www.youtube.com/embed/k8hjO-_f7bI?si=t-rJHRir-XeU3eng",
-        3: "https://www.youtube.com/embed/dNNB5WWy4AA?si=VbNc7Kqx8T0qkC1C",
+        3: "https://www.youtube.com/embed/_Jlw3NIxVTQ?si=hRCMLfBjGU_HBjF_&amp;controls=0",
         4: "https://www.youtube.com/embed/alyKpwrx-2k?si=52_3LaSgYNcAIP7d",
         5: "https://www.youtube.com/embed/YdlcduPjqY0?si=zkM9GVqtUHQl6Ssn",
         6: "https://www.youtube.com/embed/V3o0fmfpjjY?si=VFVLT_ROfZVoPSRP",
         7: "https://www.youtube.com/embed/y7Cdovk4Shg?si=q292zLZy9gUwzvZR",
         8: "https://www.youtube.com/embed/rTtXVJco5J8?si=qEGBoFh9BfWr6XvI",
-        9: "https://www.youtube.com/embed/pLdyALuY3oA?si=fJlZTdxV8VFcfHk3"
+        9: "https://www.youtube.com/embed/dPyjZ-IGwnI?si=dfOn148f9HroMUz3&amp;controls=0"
     };
 
     if (descriptions[ilhaId]) {
